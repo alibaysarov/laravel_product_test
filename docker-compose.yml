@@ -1,0 +1,61 @@
+networks:
+  laravel_shop_network:
+    driver: bridge
+
+volumes:
+  laravel_shop_db:
+
+services:
+  app:
+    build:
+      args:
+        user: ${USER}
+        uid: ${UID}
+      context: ./Docker
+      dockerfile: Dockerfile
+    image: staffdev
+    container_name: ${APP_NAME}_app
+    restart: unless-stopped
+    working_dir: /var/www/
+    depends_on:
+      - postgres
+    volumes:
+      - ./:/var/www
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+    networks:
+      - laravel_shop_network
+  nginx:
+    image: nginx:1.17-alpine
+    container_name: ${APP_NAME}_nginx
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./Docker/nginx/local:/etc/nginx/conf.d
+    networks:
+      - laravel_shop_network
+  postgres:
+    container_name: "${DB_HOST}"
+    image: postgres:15
+    restart: unless-stopped
+    volumes:
+      - laravel_shop_db:/var/lib/postgresql/data
+    env_file:
+      - ./.env
+    environment:
+      POSTGRES_DB: "${DB_DATABASE}"
+      POSTGRES_USER: "${DB_USERNAME}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      POSTGRES_ROOT_PASSWORD: "${DB_PASSWORD}"
+    networks:
+      - laravel_shop_network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $DB_USERNAME -d $DB_DATABASE" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    ports:
+      - "5433:5432"
