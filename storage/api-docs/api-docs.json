@@ -1,0 +1,134 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My Laravel API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://my-default-host.com"
+        },
+        {
+            "url": "/swagger"
+        }
+    ],
+    "paths": {
+        "/v1/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "List products",
+                "operationId": "f5ddaafe96f2991b6fb609b6afbe4f92",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Product"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Product": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "in_stock": {
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "ProductFilterRequest": {
+                "title": "Product Filter Request",
+                "description": "Параметры фильтрации и сортировки товаров",
+                "properties": {
+                    "price_from": {
+                        "description": "Минимальная цена",
+                        "type": "number",
+                        "example": 130
+                    },
+                    "price_to": {
+                        "description": "Максимальная цена",
+                        "type": "number",
+                        "example": 300
+                    },
+                    "search": {
+                        "description": "Поиск по названию",
+                        "type": "string",
+                        "example": "Leather"
+                    },
+                    "rating_from": {
+                        "description": "Минимальный рейтинг (0–5)",
+                        "type": "integer",
+                        "example": 4
+                    },
+                    "page": {
+                        "description": "Номер страницы",
+                        "type": "integer",
+                        "minimum": 1,
+                        "example": 1
+                    },
+                    "newest": {
+                        "description": "Сортировка по новизне",
+                        "type": "string",
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "example": "desc"
+                    },
+                    "price_sort": {
+                        "description": "Сортировка по цене",
+                        "type": "string",
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "example": "desc"
+                    },
+                    "rating_sort": {
+                        "description": "Сортировка по рейтингу",
+                        "type": "string",
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "example": "desc"
+                    },
+                    "category_id": {
+                        "description": "ID категории",
+                        "type": "integer",
+                        "example": 2
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Products",
+            "description": "Products"
+        }
+    ]
+}

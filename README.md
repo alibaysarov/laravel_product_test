@@ -5,5 +5,8 @@
 - установить зависимости внутри контейнера <pre>composer i</pre>
 - выполнить миграции <pre>php artisan migrate</pre>
 - запустить сидеры <pre>php artisan db:seed</pre>
+- генерация swagger <pre>php artisan l5-swagger:generate</pre>
+### Ссылка на Swagger 
+http://localhost:8000/swagger
 ### Ссылка на POSTMAN
 <https://www.postman.com/alibaysarov/workspace/laravel-shop-test/collection/34085251-54009ef4-f4d7-4ed1-85ac-686380f1a6ba?action=share&creator=34085251>
